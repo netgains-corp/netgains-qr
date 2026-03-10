@@ -180,6 +180,10 @@
                 // Wir holen das Base64 Bild, das n8n zurückgibt
                 const imageUrl = data.qrUrl; 
 
+                if (!imageUrl) {
+                    throw new Error("n8n hat kein gültiges Bild zurückgegeben (qrUrl fehlt).");
+                }
+
                 // Bild laden und anzeigen
                 qrImage.onload = () => {
                     // Erfolgreich! Zähler erhöhen
@@ -202,7 +206,11 @@
                 };
 
                 qrImage.onerror = () => {
-                    throw new Error("Fehler beim Laden des Bildes");
+                    alert("Das Bild konnte nicht geladen werden. Bitte prüfe den Output in n8n.");
+                    // Button zurücksetzen
+                    btnText.innerText = "Erneut versuchen";
+                    btnIcon.className = "fa-solid fa-qrcode text-lg";
+                    generateBtn.classList.remove('opacity-80', 'pointer-events-none');
                 };
 
                 // Zuweisung startet den Ladevorgang
